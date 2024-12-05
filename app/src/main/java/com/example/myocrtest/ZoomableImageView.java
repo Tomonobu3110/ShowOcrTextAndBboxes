@@ -22,6 +22,8 @@ public class ZoomableImageView extends AppCompatImageView {
     private float lastX, lastY;
     private boolean isDragging;
 
+    private int previousPointerCount = 0;
+
     public ZoomableImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -36,7 +38,8 @@ public class ZoomableImageView extends AppCompatImageView {
         scaleGestureDetector.onTouchEvent(event);
         gestureDetector.onTouchEvent(event);
 
-        if (event.getPointerCount() == 1) {
+        int currentPointerCount = event.getPointerCount();
+        if (currentPointerCount == 1 && previousPointerCount != 2) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     lastX = event.getX();
@@ -63,6 +66,7 @@ public class ZoomableImageView extends AppCompatImageView {
                     break;
             }
         }
+        previousPointerCount = currentPointerCount;
         return true;
     }
 
