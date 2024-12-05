@@ -10,11 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--
         <ImageView
             android:id="@+id/resultImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter" />
+        -->
+
+        <com.example.myocrtest.ZoomableImageView
+            android:id="@+id/zoomableImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

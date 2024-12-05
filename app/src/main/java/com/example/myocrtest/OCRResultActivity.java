@@ -23,14 +23,16 @@ public class OCRResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocrresult);
 
-        ImageView imageView = findViewById(R.id.resultImageView);
+        //ImageView imageView = findViewById(R.id.resultImageView);
+        ZoomableImageView zoomableImageView = findViewById(R.id.zoomableImageView);
 
         // データを受け取る
         ArrayList<CustomTextBlock> textBlocks = getIntent().getParcelableArrayListExtra(EXTRA_TEXT_BLOCKS);
 
         // 結果を描画
         if (textBlocks != null) {
-            imageView.setImageBitmap(drawBoundingBoxes(textBlocks));
+            //imageView.setImageBitmap(drawBoundingBoxes(textBlocks));
+            zoomableImageView.setImageBitmap(drawBoundingBoxes(textBlocks));
         }
     }
 
