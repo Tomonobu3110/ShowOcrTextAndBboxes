@@ -3,6 +3,7 @@ package com.example.myocrtest;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -22,7 +23,7 @@ public class ZoomableImageView extends AppCompatImageView {
     private float lastX, lastY;
     private boolean isDragging;
 
-    private int previousPointerCount = 0;
+    private boolean isTouchIgnored = false;
 
     public ZoomableImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,8 +39,20 @@ public class ZoomableImageView extends AppCompatImageView {
         scaleGestureDetector.onTouchEvent(event);
         gestureDetector.onTouchEvent(event);
 
-        int currentPointerCount = event.getPointerCount();
-        if (currentPointerCount == 1 && previousPointerCount != 2) {
+        // Prevent unexpected move after pinch in, pinch out
+        int pointerCount = event.getPointerCount();
+        int actionMasked = event.getActionMasked();
+        //Log.i("ZoomableImageView", "pointeCount : " + pointerCount + " / Action : " + actionMasked);
+        if (pointerCount == 2) {
+            isTouchIgnored = true;
+            return true;
+        }
+        if (pointerCount == 1 && actionMasked == MotionEvent.ACTION_UP) {
+            isTouchIgnored = false;
+            return true;
+        }
+
+        if (pointerCount == 1 && false == isTouchIgnored) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     lastX = event.getX();
@@ -66,7 +79,6 @@ public class ZoomableImageView extends AppCompatImageView {
                     break;
             }
         }
-        previousPointerCount = currentPointerCount;
         return true;
     }
 
